@@ -2,10 +2,20 @@
 
 namespace SclZfPages;
 
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use SclZfPages\Storage\DoctrineStorage;
+
 /**
+ * Module which provides basic static page display & management.
+ *
  * @author Tom Oram
  */
-class Module
+class Module implements
+    AutoloaderProviderInterface,
+    ConfigProviderInterface,
+    ServiceProviderInterface
 {
     /**
      * @return array
@@ -38,7 +48,18 @@ class Module
     public function getServiceConfig()
     {
         return array(
+            'aliases' => array(
+                'SclZfPages\Storage' => 'SclZfPages\Storage\DoctrineStorage',
+            ),
+            'invokables' => array(
+                'SclZfPages\Service\Renderer' => 'SclZfPages\Service\Renderer',
+            ),
             'factories' => array(
+                'SclZfPages\Storage\DoctrineStorage' => function ($sm) {
+                    return new DoctrineStorage(
+                        $sm->get('doctrine.entitymanager.orm_default')
+                    );
+                }
             ),
         );
     }

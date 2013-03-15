@@ -2,8 +2,14 @@
 
 namespace SclZfPages\Controller;
 
+use SclZfPages\Exception\PageFetchException;
 use Zend\Mvc\Controller\AbstractActionController;
 
+/**
+ * Display and manage the content of the page.
+ *
+ * @author Tom Oram <tom@scl.co.uk>
+ */
 class ContentController extends AbstractActionController
 {
     /**
@@ -15,23 +21,29 @@ class ContentController extends AbstractActionController
     {
         $slug = $this->params('page');
 
-        $entityManager = $this->getEntityManager();
+        /* @var $storage \SclZfPages\Storage\StorageInterface */
+        $storage = $this->getServiceLocator()->get('\SclZfPages\Storage');
 
-        $query = $entityManager->createQuery(
-            'SELECT p FROM SclZfPages\Entity\Page p WHERE p.slug = ?1'
-        );
-
-        $query->setParameter(1, $slug);
-        $pages = $query->getResult();
-
-        if (count($pages) !== 1) {
+        try {
+            $page = $storage->getBySlug($slug);
+        } catch (PageFetchException $e) {
+            // @todo Log exception
             $response = $this->getResponse();
-            $response->setStatusCode($response::STATUS_CODE_404);
-            // @todo should something be returned?
+            $response->setStatusCode($response::STATUS_CODE_500);
+            // @todo What should be returned here?
             return;
         }
 
-        return array('page' => $pages[0]);
+        if (null === $page) {
+            $response = $this->getResponse();
+            $response->setStatusCode($response::STATUS_CODE_404);
+            // @todo What should be returned here?
+            return;
+        }
+
+        $renderer = $this->getServiceLocator()->get('SclZfPages\Service\Renderer');
+
+        return array('page' => $renderer->render($page));
     }
 
     public function editAction()

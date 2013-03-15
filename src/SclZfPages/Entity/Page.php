@@ -2,30 +2,31 @@
 
 namespace SclZfPages\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Zend\Form\Annotation as Form;
 
 /**
- * @author Tom Oram
- * @ORM\Entity
- * @ORM\Table(name="cms_page")
- * @Form\Hydrator("Zend\Stdlib\Hydrator\ArraySerializable")
+ * Entity for storing the page content.
+ *
  * @Form\Name("cms_page")
+ *
+ * @author Tom Oram
  */
 class Page
 {
     /**
+     * The database record id.
+     *
      * @var integer
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     *
      * @Form\Type("Zend\Form\Element\Hidden")
      */
     private $id;
 
     /**
+     * The human readable URL part.
+     *
      * @var string
-     * @ORM\Column(type="string")
+     *
      * @Form\Type("Zend\Form\Element\Text")
      * @Form\Options({"label":"Slug"})
      * @Form\Validator({"name": "StringLength", "options": {"min":3, "max": 100}})
@@ -34,8 +35,10 @@ class Page
     private $slug;
 
     /**
+     * The page title.
+     *
      * @var string
-     * @ORM\Column(type="string")
+     *
      * @Form\Type("Zend\Form\Element\Text")
      * @Form\Options({"label":"Slug"})
      * @Form\Validator({"name": "StringLength", "options": {"min":0, "max": 200}})
@@ -44,8 +47,10 @@ class Page
     private $title;
 
     /**
+     * The page body.
+     *
      * @var string
-     * @ORM\Column(type="text")
+     *
      * @Form\Type("Zend\Form\Element\Textarea")
      * @Form\Options({"label":"Content"})
      * @Form\Validator({"name": "StringLength", "options": {"min":0, "max": 200}})
@@ -54,7 +59,7 @@ class Page
     private $content;
 
     /**
-     * @return number
+     * @return integer
      */
     public function getId()
     {
@@ -64,7 +69,7 @@ class Page
     /**
      *
      * @param integer $id
-     * @return Page
+     * @return self
      */
     public function setId($id)
     {
@@ -82,7 +87,7 @@ class Page
 
     /**
      * @param string $slug
-     * @return Page
+     * @return self
      */
     public function setSlug($slug)
     {
@@ -100,7 +105,7 @@ class Page
 
     /**
      * @param string $title
-     * @return Page
+     * @return self
      */
     public function setTitle($title)
     {
@@ -118,7 +123,7 @@ class Page
 
     /**
      * @param string $content
-     * @return Page
+     * @return self
      */
     public function setContent($content)
     {
