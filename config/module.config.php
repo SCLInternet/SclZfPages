@@ -55,6 +55,15 @@ return array(
         ),
     ),
 
+    'scl_zf_pages' => array(
+        'formatters' => array(
+            'text' => 'SclZfPages\Formatter\PlainText',
+            'html' => 'SclZfPages\Formatter\Html',
+        ),
+
+        'default_formatter' => 'html',
+    ),
+
     'view_manager' => array(
         'template_path_stack' => array(
             'SclZfPages\Controller\Customer' => __DIR__ . '/../view',

@@ -2,63 +2,51 @@
 
 namespace SclZfPages\Entity;
 
-use Zend\Form\Annotation as Form;
-
 /**
  * Entity for storing the page content.
  *
- * @Form\Name("cms_page")
- *
- * @author Tom Oram
+ * @author Tom Oram <tom@scl.co.uk>
  */
-class Page
+class Page implements PageInterface
 {
     /**
      * The database record id.
      *
      * @var integer
-     *
-     * @Form\Type("Zend\Form\Element\Hidden")
      */
-    private $id;
+    protected $id;
 
     /**
      * The human readable URL part.
      *
      * @var string
-     *
-     * @Form\Type("Zend\Form\Element\Text")
-     * @Form\Options({"label":"Slug"})
-     * @Form\Validator({"name": "StringLength", "options": {"min":3, "max": 100}})
-     * @Form\Attributes({"id": "cmspage-form-slug"})
      */
-    private $slug;
+    protected $slug;
+
+    /**
+     * The format of the page content.
+     *
+     * @var string
+     */
+    protected $format;
 
     /**
      * The page title.
      *
      * @var string
-     *
-     * @Form\Type("Zend\Form\Element\Text")
-     * @Form\Options({"label":"Slug"})
-     * @Form\Validator({"name": "StringLength", "options": {"min":0, "max": 200}})
-     * @Form\Attributes({"id": "cmspage-form-title"})
      */
-    private $title;
+    protected $title;
 
     /**
      * The page body.
      *
      * @var string
-     *
-     * @Form\Type("Zend\Form\Element\Textarea")
-     * @Form\Options({"label":"Content"})
-     * @Form\Validator({"name": "StringLength", "options": {"min":0, "max": 200}})
-     * @Form\Attributes({"id": "cmspage-form-content"})
      */
-    private $content;
+    protected $content;
 
     /**
+     * {@inheritDoc}
+     *
      * @return integer
      */
     public function getId()
@@ -67,17 +55,20 @@ class Page
     }
 
     /**
+     * {@inheritDoc}
      *
-     * @param integer $id
+     * @param  integer $id
      * @return self
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = (int) $id;
         return $this;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @return string
      */
     public function getSlug()
@@ -86,16 +77,42 @@ class Page
     }
 
     /**
-     * @param string $slug
+     * {@inheritDoc}
+     *
+     * @param  string $slug
      * @return self
      */
     public function setSlug($slug)
     {
-        $this->slug = $slug;
+        $this->slug = (string) $slug;
         return $this;
     }
 
     /**
+     * {@inheritDoc}
+     *
+     * @return string
+     */
+    public function getFormat()
+    {
+        return $this->format;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param  string $format
+     * @return self
+     */
+    public function setFormat($format)
+    {
+        $this->format = (string) $format;
+        return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
      * @return string
      */
     public function getTitle()
@@ -104,16 +121,20 @@ class Page
     }
 
     /**
-     * @param string $title
+     * {@inheritDoc}
+     *
+     * @param  string $title
      * @return self
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+        $this->title = (string) $title;
         return $this;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @return string
      */
     public function getContent()
@@ -122,12 +143,14 @@ class Page
     }
 
     /**
-     * @param string $content
+     * {@inheritDoc}
+     *
+     * @param  string $content
      * @return self
      */
     public function setContent($content)
     {
-        $this->content = $content;
+        $this->content = (string) $content;
         return $this;
     }
 }

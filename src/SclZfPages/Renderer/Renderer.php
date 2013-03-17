@@ -1,8 +1,8 @@
 <?php
 
-namespace SclZfPages\Service;
+namespace SclZfPages\Renderer;
 
-use SclZfPages\Entity\Page;
+use SclZfPages\Entity\PageInterface;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 
@@ -13,6 +13,8 @@ use Zend\EventManager\EventManagerInterface;
  */
 class Renderer implements EventManagerAwareInterface
 {
+    const EVENT_MANAGER_INDENTIFIER = __CLASS__;
+
     const RENDER_EVENT = 'render';
 
     /**
@@ -21,6 +23,23 @@ class Renderer implements EventManagerAwareInterface
      * @var EventManagerInterface
      */
     protected $eventManager;
+
+    /**
+     * Factory for fetching formatters.
+     *
+     * @var FormatterFactoryInterface
+     */
+    protected $formatManager;
+
+    /**
+     * Inject the formatter factory.
+     *
+     * @param FormatterFactoryInterface $formatManager
+     */
+    public function __construct(FormatterManager $formatManager)
+    {
+        $this->formatManager = $formatManager;
+    }
 
     /**
      * {@inheritDoc}
@@ -50,16 +69,18 @@ class Renderer implements EventManagerAwareInterface
     /**
      * Prepares the page for rendering.
      *
-     * @param  Page $page
-     * @return Page
+     * @param  PageInterface $page
+     * @return PageInterface
      */
-    public function render(Page $page)
+    public function render(PageInterface $page)
     {
         // Use a copy incase it gets modified.
         $renderPage = clone $page;
 
+        $this->formatManager->addFormatter($page->getFormat());
+
         $this->eventManager->trigger(self::RENDER_EVENT, $renderPage);
 
-        return $page;
+        return $renderPage;
     }
 }

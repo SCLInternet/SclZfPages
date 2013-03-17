@@ -49,12 +49,34 @@ class Module implements
     {
         return array(
             'aliases' => array(
-                'SclZfPages\Storage' => 'SclZfPages\Storage\DoctrineStorage',
+                'SclZfPages\Storage\StorageInterface' => 'SclZfPages\Storage\DoctrineStorage',
             ),
             'invokables' => array(
-                'SclZfPages\Service\Renderer' => 'SclZfPages\Service\Renderer',
+                'SclZfPages\Formatter\Html' => 'SclZfPages\Formatter\Html',
+                'SclZfPages\Formatter\PlainText' => 'SclZfPages\Formatter\PlainText',
             ),
             'factories' => array(
+                'SclZfPages\Renderer\FormatManager' => function ($sm) {
+                    $eventManager = $sm->get('SharedEventManager');
+                    $formatterFactory = $sm->get('SclZfPages\Formatter\FormatterFactoryInterface');
+                    return new Renderer\FormatterManager($formatterFactory, $eventManager);
+                },
+
+                'SclZfPages\Renderer\Renderer' => function ($sm) {
+                    $formatManager = $sm->get('SclZfPages\Renderer\FormatManager');
+                    return new Renderer\Renderer($formatManager);
+                },
+
+                'SclZfPages\Formatter\FormatterFactoryInterface' => function ($sm) {
+                    $options = $sm->get('SclZfPages\Options\Options');
+                    return new Formatter\FormatterFactory($options);
+                },
+
+                'SclZfPages\Options\Options' => function ($sm) {
+                    $config = $sm->get('Config');
+                    return new Options\Options($config['scl_zf_pages']);
+                },
+
                 'SclZfPages\Storage\DoctrineStorage' => function ($sm) {
                     return new DoctrineStorage(
                         $sm->get('doctrine.entitymanager.orm_default')

@@ -10,6 +10,7 @@
         </id>
 
         <field name="slug" type="string" />
+        <field name="format" type="string" />
         <field name="title" type="string" />
         <field name="content" type="text" />
     </entity>

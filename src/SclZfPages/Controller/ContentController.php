@@ -22,7 +22,7 @@ class ContentController extends AbstractActionController
         $slug = $this->params('page');
 
         /* @var $storage \SclZfPages\Storage\StorageInterface */
-        $storage = $this->getServiceLocator()->get('\SclZfPages\Storage');
+        $storage = $this->getServiceLocator()->get('\SclZfPages\Storage\StorageInterface');
 
         try {
             $page = $storage->getBySlug($slug);
@@ -41,7 +41,7 @@ class ContentController extends AbstractActionController
             return;
         }
 
-        $renderer = $this->getServiceLocator()->get('SclZfPages\Service\Renderer');
+        $renderer = $this->getServiceLocator()->get('SclZfPages\Renderer\Renderer');
 
         return array('page' => $renderer->render($page));
     }
