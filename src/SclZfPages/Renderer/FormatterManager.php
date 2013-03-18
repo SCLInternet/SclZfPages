@@ -2,7 +2,6 @@
 
 namespace SclZfPages\Renderer;
 
-use SclZfPages\Formatter\Exception\InvalidFormatterException;
 use SclZfPages\Formatter\FormatterFactoryInterface;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\SharedEventManagerInterface;
@@ -20,7 +19,7 @@ class FormatterManager
      * @var SharedEventManagerInterface
      */
     protected $eventManager;
-    
+
     /**
      * Used to load the formatters.
      *
@@ -50,21 +49,13 @@ class FormatterManager
      */
     protected function loadFormatter($formatterName)
     {
-        try {
-            $formatter = $this->formatterFactory->get($formatterName);
-        } catch (InvalidFormatterException $e) {
-            $formatter = null;
-        }
+        $formatter = $this->formatterFactory->get($formatterName);
 
         if (null !== $formatter) {
             return $formatter;
         }
 
-        try {
-            $formatter = $this->formatterFactory->getDefaultFormatter();
-        } catch (InvalidFormatterException $e) {
-            $formatter = null;
-        }
+        $formatter = $this->formatterFactory->getDefaultFormatter();
 
         return $formatter;
     }

@@ -2,8 +2,8 @@
 
 namespace SclZfPages\Formatter;
 
+use SclZfPages\Formatter\Exception\InvalidFormatterException;
 use SclZfPages\Formatter\FormatterInterface;
-
 use SclZfPages\Options\Options;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -73,21 +73,20 @@ class FormatterFactory implements
      *
      * @param  string $name
      * @return FormatterInterface
-     * @throws Exception\InvalidFormatterException
      */
     public function get($name)
     {
         $formatters = $this->listFormatters();
 
-        $formatter = $this->getServiceLocator()->get($formatters[$name]);
-
-        if (!$formatter instanceof FormatterInterface) {
-            throw new Exception\InvalidFormatterException(
-                'Expected instance of FormatterInterface; got "'
-                . (is_object($formatter) ? get_class($formatter) : gettype($formatter))
-                . '"'
-            );
+        if (!isset($formatters[$name])) {
+            return null;
         }
+
+        if (!$this->getServiceLocator()->has($formatters[$name])) {
+            return null;
+        }
+
+        $formatter = $this->getServiceLocator()->get($formatters[$name]);
 
         return $formatter;
     }

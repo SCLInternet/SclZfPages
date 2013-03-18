@@ -2,8 +2,6 @@
 
 namespace SclZfPages\Formatter;
 
-use SclZfPages\Entity\PageInterface;
-
 /**
  * Interface for a system which formats content.
  *

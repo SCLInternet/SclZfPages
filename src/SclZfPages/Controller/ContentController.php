@@ -22,7 +22,7 @@ class ContentController extends AbstractActionController
         $slug = $this->params('page');
 
         /* @var $storage \SclZfPages\Storage\StorageInterface */
-        $storage = $this->getServiceLocator()->get('\SclZfPages\Storage\StorageInterface');
+        $storage = $this->getServiceLocator()->get('SclZfPages\Storage\StorageInterface');
 
         try {
             $page = $storage->getBySlug($slug);
