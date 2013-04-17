@@ -2,7 +2,7 @@
 
 namespace SclZfPages\Storage;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectManager;
 use SclZfPages\Entity\Page;
 use SclZfPages\Exception\PageFetchException;
 
@@ -16,16 +16,16 @@ class DoctrineStorage implements StorageInterface
     /**
      * The doctrine ORM entity manager
      *
-     * @var EntityManager
+     * @var ObjectManager
      */
     protected $entityManager;
 
     /**
      * Initialise the class.
      *
-     * @param EntityManager $entityManager
+     * @param ObjectManager $entityManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(ObjectManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
