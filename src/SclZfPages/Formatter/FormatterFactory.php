@@ -2,7 +2,6 @@
 
 namespace SclZfPages\Formatter;
 
-use SclZfPages\Formatter\Exception\InvalidFormatterException;
 use SclZfPages\Formatter\FormatterInterface;
 use SclZfPages\Options\Options;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
