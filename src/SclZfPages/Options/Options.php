@@ -51,7 +51,7 @@ class Options extends AbstractOptions
     {
         return $this->defaultFormatter;
     }
-    
+
     /**
      * Sets the value for defaultFormatter.
      *
